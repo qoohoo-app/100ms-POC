@@ -57,7 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
       authToken: token,
       userName: 'Qoohoo',
     );
-
     HMSMeeting meeting = new HMSMeeting();
     meeting.joinMeeting(
       config: config,
@@ -74,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ElevatedButton(
             onPressed: () async {
