@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:golive/common/constant.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 import 'package:http/http.dart' as http;
+// import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -30,9 +32,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // void getPermissions() async {
+  //   await Permission.camera.request();
+  //   await Permission.microphone.request();
+  //
+  //   while ((await Permission.camera.isDenied)) {
+  //     await Permission.camera.request();
+  //   }
+  //   while ((await Permission.microphone.isDenied)) {
+  //     await Permission.microphone.request();
+  //   }
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getPermissions();
+  }
+
   Future<String> getToken({required String user, required String room, required String role}) async {
     http.Response response = await http.post(
-      Uri.parse('https://prod-in.100ms.live/hmsapi/qoohoo3.app.100ms.live/'),
+      Uri.parse(Constant.prodTokenEndpoint),
       body: {
         'room_id': room,
         'user_id': user,
@@ -71,26 +92,29 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('Go Live'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () async {
-              await startMeeting(role: 'teacher');
-            },
-            child: Text('Create meeting'),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await startMeeting(role: 'student');
-            },
-            child: Text('Join meeting'),
-          ),
-        ],
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                await startMeeting(role: 'teacher');
+              },
+              child: Text('Create meeting'),
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await startMeeting(role: 'student');
+              },
+              child: Text('Join meeting'),
+            ),
+          ],
+        ),
       ),
     );
   }
