@@ -1,5 +1,7 @@
 class Constant {
-  static String prodTokenEndpoint = "https://prod-in.100ms.live/hmsapi/qoohoo3.app.100ms.live/";
+  static String prodTokenEndpoint = "https://prod-in.100ms.live/hmsapi/qoohoo3.app.100ms.live/api/token";
+
+  static String roomID = '619f2a06af3188df33e6b172';
 
   // static String qaTokenEndPoint = "https://qa-in.100ms.live/hmsapi/get-token";
   //
@@ -11,9 +13,7 @@ class Constant {
   // static String tokenKey = "token";
   //
   // static String idKey = "id";
-  //
-  // static String roomIDKey = "roomID";
-  //
+
   // static String hostKey = "host";
   // static String defaultRole = 'host';
 }

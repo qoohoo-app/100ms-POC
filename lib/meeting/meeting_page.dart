@@ -19,10 +19,19 @@ import 'meeting_participants_list.dart';
 
 class MeetingPage extends StatefulWidget {
   final String roomId;
+  final String userId;
   final MeetingFlow flow;
-  final String user;
+  final String userName;
+  final String role;
 
-  const MeetingPage({Key? key, required this.roomId, required this.flow, required this.user}) : super(key: key);
+  const MeetingPage({
+    Key? key,
+    required this.roomId,
+    required this.userId,
+    required this.flow,
+    required this.userName,
+    required this.role,
+  }) : super(key: key);
 
   @override
   _MeetingPageState createState() => _MeetingPageState();
@@ -38,8 +47,13 @@ class _MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
     _meetingStore = context.read<MeetingStore>();
-    MeetingController meetingController =
-        MeetingController(roomUrl: widget.roomId, flow: widget.flow, user: widget.user);
+    MeetingController meetingController = MeetingController(
+      userId: widget.userId,
+      roomId: widget.roomId,
+      flow: widget.flow,
+      userName: widget.userName,
+      role: widget.role,
+    );
     _meetingStore.meetingController = meetingController;
 
     // _meetingStore.trackStatus.observe((p0) {

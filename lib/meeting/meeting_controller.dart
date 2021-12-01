@@ -2,24 +2,35 @@ import 'package:golive/enum/meeting_flow.dart';
 import 'package:golive/meeting/hms_sdk_interactor.dart';
 import 'package:golive/service/room_service.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
-import 'package:uuid/uuid.dart';
 
 class MeetingController {
-  final String roomUrl;
-  final String user;
+  final String userName;
+  final String userId;
+  final String roomId;
+  final String role;
   final MeetingFlow flow;
   HMSSDKInteractor? _hmsSdkInteractor;
 
-  MeetingController({required this.roomUrl, required this.user, required this.flow})
-      : _hmsSdkInteractor = HMSSDKInteractor();
+  MeetingController({
+    required this.roomId,
+    required this.userId,
+    required this.userName,
+    required this.flow,
+    required this.role,
+  }) : _hmsSdkInteractor = HMSSDKInteractor();
 
   Future<bool> joinMeeting() async {
-    String token = await RoomService().getToken(user: user, room: roomUrl);
+    String token = await RoomService().getToken(
+      userId: userId,
+      roomId: roomId,
+      role: role,
+    );
+
     HMSConfig config = HMSConfig(
-      userId: Uuid().v1(),
-      roomId: roomUrl,
+      userId: userId,
+      roomId: roomId,
       authToken: token,
-      userName: user,
+      userName: userName,
     );
 
     await _hmsSdkInteractor?.joinMeeting(config: config, isProdLink: false, setWebRtcLogs: true);

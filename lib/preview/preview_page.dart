@@ -14,10 +14,19 @@ import 'package:provider/provider.dart';
 
 class PreviewPage extends StatefulWidget {
   final String roomId;
+  final String userId;
   final MeetingFlow flow;
-  final String user;
+  final String userName;
+  final String role;
 
-  const PreviewPage({Key? key, required this.roomId, required this.flow, required this.user}) : super(key: key);
+  const PreviewPage({
+    Key? key,
+    required this.roomId,
+    required this.flow,
+    required this.userName,
+    required this.userId,
+    required this.role,
+  }) : super(key: key);
 
   @override
   _PreviewPageState createState() => _PreviewPageState();
@@ -30,7 +39,12 @@ class _PreviewPageState extends State<PreviewPage> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
     _previewStore = PreviewStore();
-    _previewStore.previewController = PreviewController(roomId: widget.roomId, user: widget.user);
+    _previewStore.previewController = PreviewController(
+      roomId: widget.roomId,
+      userName: widget.userName,
+      userId: widget.userId,
+      role: widget.role,
+    );
     super.initState();
     initPreview();
     reaction((_) => _previewStore.error,
@@ -112,11 +126,20 @@ class _PreviewPageState extends State<PreviewPage> with WidgetsBindingObserver {
                       child: ElevatedButton(
                     onPressed: () {
                       _previewStore.removeListener();
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
                           builder: (_) => Provider<MeetingStore>(
-                                create: (_) => MeetingStore(),
-                                child: MeetingPage(roomId: widget.roomId, flow: widget.flow, user: widget.user),
-                              )));
+                            create: (_) => MeetingStore(),
+                            child: MeetingPage(
+                              roomId: widget.roomId,
+                              flow: widget.flow,
+                              userName: widget.userName,
+                              userId: widget.userId,
+                              role: widget.role,
+                            ),
+                          ),
+                        ),
+                      );
                     },
                     child: Text(
                       'Join Now',

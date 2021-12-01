@@ -4,15 +4,20 @@ import 'package:golive/common/constant.dart';
 import 'package:http/http.dart' as http;
 
 class RoomService {
-  Future<String> getToken({required String user, required String room}) async {
+  Future<String> getToken({
+    required String userId,
+    required String roomId,
+    required String role,
+  }) async {
     Uri endPoint = Uri.parse(Constant.prodTokenEndpoint);
 
     http.Response response = await http.post(endPoint, body: {
-      'user_id': user,
+      'room_id': roomId,
+      'user_id': userId,
+      'role': role,
     });
 
     var body = json.decode(response.body);
-    print(body);
     return body['token'];
   }
 }
