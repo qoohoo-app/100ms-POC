@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:golive/common/ui/organisms/peer_item_organism.dart';
 import 'package:golive/common/util/utility_components.dart';
-import 'package:golive/enum/meeting_flow.dart';
 import 'package:golive/meeting/meeting_page.dart';
 import 'package:golive/meeting/meeting_store.dart';
 import 'package:golive/preview/preview_controller.dart';
@@ -14,18 +13,12 @@ import 'package:provider/provider.dart';
 
 class PreviewPage extends StatefulWidget {
   final String roomId;
-  final String userId;
-  final MeetingFlow flow;
-  final String userName;
-  final String role;
+  final HMSConfig config;
 
   const PreviewPage({
     Key? key,
     required this.roomId,
-    required this.flow,
-    required this.userName,
-    required this.userId,
-    required this.role,
+    required this.config,
   }) : super(key: key);
 
   @override
@@ -41,9 +34,7 @@ class _PreviewPageState extends State<PreviewPage> with WidgetsBindingObserver {
     _previewStore = PreviewStore();
     _previewStore.previewController = PreviewController(
       roomId: widget.roomId,
-      userName: widget.userName,
-      userId: widget.userId,
-      role: widget.role,
+      config: widget.config,
     );
     super.initState();
     initPreview();
@@ -132,10 +123,7 @@ class _PreviewPageState extends State<PreviewPage> with WidgetsBindingObserver {
                             create: (_) => MeetingStore(),
                             child: MeetingPage(
                               roomId: widget.roomId,
-                              flow: widget.flow,
-                              userName: widget.userName,
-                              userId: widget.userId,
-                              role: widget.role,
+                              config: widget.config,
                             ),
                           ),
                         ),

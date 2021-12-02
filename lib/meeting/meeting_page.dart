@@ -7,7 +7,6 @@ import 'package:golive/common/ui/organisms/role_change_request_dialog.dart';
 import 'package:golive/common/ui/organisms/track_change_request_dialog.dart';
 import 'package:golive/common/ui/organisms/video_tile.dart';
 import 'package:golive/common/util/utility_components.dart';
-import 'package:golive/enum/meeting_flow.dart';
 import 'package:golive/main.dart';
 import 'package:golive/meeting/meeting_controller.dart';
 import 'package:golive/meeting/meeting_store.dart';
@@ -19,18 +18,11 @@ import 'meeting_participants_list.dart';
 
 class MeetingPage extends StatefulWidget {
   final String roomId;
-  final String userId;
-  final MeetingFlow flow;
-  final String userName;
-  final String role;
-
+  final HMSConfig config;
   const MeetingPage({
     Key? key,
     required this.roomId,
-    required this.userId,
-    required this.flow,
-    required this.userName,
-    required this.role,
+    required this.config,
   }) : super(key: key);
 
   @override
@@ -48,11 +40,7 @@ class _MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     WidgetsBinding.instance!.addObserver(this);
     _meetingStore = context.read<MeetingStore>();
     MeetingController meetingController = MeetingController(
-      userId: widget.userId,
-      roomId: widget.roomId,
-      flow: widget.flow,
-      userName: widget.userName,
-      role: widget.role,
+      config: widget.config,
     );
     _meetingStore.meetingController = meetingController;
 
@@ -94,6 +82,9 @@ class _MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   }
 
   void checkButtons() async {
+    print('Video-on--------------${!(await _meetingStore.meetingController.isVideoMute(null))}');
+    print('Audio-on--------------${!(await _meetingStore.meetingController.isAudioMute(null))}');
+
     _meetingStore.isVideoOn = !(await _meetingStore.meetingController.isVideoMute(null));
     _meetingStore.isMicOn = !(await _meetingStore.meetingController.isAudioMute(null));
   }

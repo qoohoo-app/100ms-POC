@@ -191,12 +191,12 @@ abstract class MeetingStoreBase with Store implements HMSUpdateListener, HMSLogL
   @override
   void onJoin({required HMSRoom room}) {
     if (Platform.isAndroid) {
-      print("members ${room.peers!.length}");
+      print("members---------------------------------- ${room.peers!.length}");
       for (HMSPeer each in room.peers!) {
         if (each.isLocal) {
           localPeer = each;
           addPeer(localPeer!);
-          print('on join ${localPeer!.peerId}');
+          print('on join---------- ${localPeer!.peerId}');
           break;
         }
       }

@@ -66,6 +66,7 @@ abstract class PreviewStoreBase with Store implements HMSPreviewListener, HMSLog
 
   @action
   void updateError(HMSError error) {
+    print(error);
     this.error = error;
   }
 

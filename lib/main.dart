@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:golive/common/constant.dart';
-import 'package:golive/enum/meeting_flow.dart';
 import 'package:golive/preview/preview_page.dart';
+import 'package:golive/service/room_service.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
@@ -53,41 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
     getPermissions();
   }
 
-  Future<String> getToken({required String user, required String room, required String role}) async {
-    http.Response response = await http.post(
-      Uri.parse(Constant.prodTokenEndpoint),
-      body: {
-        'room_id': room,
-        'user_id': user,
-        'role': role,
-      },
-    );
-
-    var body = json.decode(response.body);
-    return body['token'];
-  }
-
-  Future<void> startMeeting({
-    required String role,
-  }) async {
-    final uid = Uuid().v1();
-    final roomId = Constant.roomID;
-    final token = await getToken(user: uid, room: roomId, role: role);
-
-    HMSConfig config = HMSConfig(
-      userId: uid,
-      roomId: roomId,
-      authToken: token,
-      userName: 'Qoohoo',
-    );
-    HMSMeeting meeting = new HMSMeeting();
-    meeting.joinMeeting(
-      config: config,
-      isProdLink: false,
-      setWebrtcLogs: false,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ElevatedButton(
               onPressed: () async {
-                await startMeeting(role: 'teacher');
+                // await startMeeting(role: 'teacher');
               },
               child: Text('Create meeting'),
             ),
@@ -110,15 +72,28 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 24,
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                final userId = Uuid().v1();
+                final roomId = Constant.roomID;
+
+                String token = await RoomService().getToken(
+                  userId: userId,
+                  roomId: roomId,
+                  role: 'student',
+                );
+
+                HMSConfig config = HMSConfig(
+                  userId: userId,
+                  roomId: roomId,
+                  authToken: token,
+                  userName: 'Qoohoo',
+                );
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => PreviewPage(
-                      roomId: Constant.roomID,
-                      userId: Uuid().v1(),
-                      userName: 'Qoohoo',
-                      role: 'student',
-                      flow: MeetingFlow.join,
+                      roomId: roomId,
+                      config: config,
                     ),
                   ),
                 );

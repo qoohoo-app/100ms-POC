@@ -1,36 +1,18 @@
 import 'package:golive/meeting/hms_sdk_interactor.dart';
-import 'package:golive/service/room_service.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 
 class PreviewController {
   final String roomId;
-  final String userId;
-  final String userName;
-  final String role;
+  final HMSConfig config;
   HMSSDKInteractor? _hmsSdkInteractor;
 
   PreviewController({
     required this.roomId,
-    required this.userName,
-    required this.userId,
-    required this.role,
+    required this.config,
   }) : _hmsSdkInteractor = HMSSDKInteractor();
 
   Future<bool> startPreview() async {
-    String token = await RoomService().getToken(
-      userId: userId,
-      roomId: roomId,
-      role: role,
-    );
-
-    HMSConfig config = HMSConfig(
-      userId: userId,
-      roomId: roomId,
-      authToken: token,
-      userName: userName,
-    );
-
-    _hmsSdkInteractor?.previewVideo(config: config, isProdLink: false, setWebRtcLogs: true);
+    _hmsSdkInteractor?.previewVideo(config: config, isProdLink: true, setWebRtcLogs: false);
     return true;
   }
 
