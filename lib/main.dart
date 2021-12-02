@@ -50,6 +50,33 @@ class _MyHomePageState extends State<MyHomePage> {
     getPermissions();
   }
 
+  Future<void> startMeeting({required String role}) async {
+    final userId = Uuid().v1();
+    final roomId = Constant.roomID;
+
+    String token = await RoomService().getToken(
+      userId: userId,
+      roomId: roomId,
+      role: role,
+    );
+
+    HMSConfig config = HMSConfig(
+      userId: userId,
+      roomId: roomId,
+      authToken: token,
+      userName: 'Qoohoo',
+    );
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => PreviewPage(
+          roomId: roomId,
+          config: config,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ElevatedButton(
               onPressed: () async {
-                // await startMeeting(role: 'teacher');
+                ///Can change template/role using 100ms dashboard
+                //teacher ==> creator
+                await startMeeting(role: 'teacher');
               },
               child: Text('Create meeting'),
             ),
@@ -73,32 +102,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final userId = Uuid().v1();
-                final roomId = Constant.roomID;
-
-                String token = await RoomService().getToken(
-                  userId: userId,
-                  roomId: roomId,
-                  role: 'student',
-                );
-
-                HMSConfig config = HMSConfig(
-                  userId: userId,
-                  roomId: roomId,
-                  authToken: token,
-                  userName: 'Qoohoo',
-                );
-
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => PreviewPage(
-                      roomId: roomId,
-                      config: config,
-                    ),
-                  ),
-                );
-
-                // await startMeeting(role: 'student');
+                //student ==> member
+                await startMeeting(role: 'student');
               },
               child: Text('Join meeting'),
             ),
