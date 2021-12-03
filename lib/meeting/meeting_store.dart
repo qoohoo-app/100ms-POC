@@ -345,6 +345,8 @@ abstract class MeetingStoreBase with Store implements HMSUpdateListener, HMSLogL
   @override
   void onRemovedFromRoom({required HMSPeerRemovedFromPeer hmsPeerRemovedFromPeer}) {
     meetingController.leaveMeeting();
+
+    //TODO: meet end (for both) should navigate pop, context not preset (will be in real app)
   }
 
   void changeRole({required String peerId, required String roleName, bool forceChange = false}) {

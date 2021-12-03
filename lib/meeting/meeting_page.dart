@@ -82,9 +82,6 @@ class _MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   }
 
   void checkButtons() async {
-    print('Video-on--------------${!(await _meetingStore.meetingController.isVideoMute(null))}');
-    print('Audio-on--------------${!(await _meetingStore.meetingController.isAudioMute(null))}');
-
     _meetingStore.isVideoOn = !(await _meetingStore.meetingController.isVideoMute(null));
     _meetingStore.isMicOn = !(await _meetingStore.meetingController.isAudioMute(null));
   }
